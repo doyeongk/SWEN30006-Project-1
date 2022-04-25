@@ -1,19 +1,20 @@
 package snakeladder.game;
 
 import ch.aplu.jgamegrid.Actor;
+import java.util.ArrayList;
 
 public class Die extends Actor
 {
   private NavigationPane np;
   private int nb;
-  private int stepsToMove;
+  private ArrayList<Integer> listOfRolls;
 
-  Die(int nb, NavigationPane np, int stepsToMove)
+  Die(int nb, NavigationPane np, ArrayList<Integer> listOfRolls)
   {
     super("sprites/pips" + nb + ".gif", 7);
     this.nb = nb;
     this.np = np;
-    this.stepsToMove = stepsToMove;
+    this.listOfRolls = listOfRolls;
   }
 
   public void act()
@@ -22,8 +23,16 @@ public class Die extends Actor
     if (getIdVisible() == 6)
     {
       setActEnabled(false);
-      np.startMoving(stepsToMove);
+      np.startMoving(stepsToMove());
     }
+  }
+
+  private int stepsToMove()  {
+    int sum = 0;
+    for (Integer listOfRoll : this.listOfRolls) {
+      sum += listOfRoll;
+    }
+    return sum;
   }
 
 }

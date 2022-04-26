@@ -279,6 +279,10 @@ public class NavigationPane extends GameGrid
         playerPositions.add(puppet.getCellIndex() + "");
       }
       gamePlayCallback.finishGameWithResults(nbRolls % gp.getNumberOfPlayers(), playerPositions);
+      for (Puppet puppet: gp.getAllPuppets()) {
+        puppet.showStats();
+        puppet.showInter();
+      }
       gp.resetAllPuppets();
     }
     else

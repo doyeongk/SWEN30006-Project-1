@@ -2,6 +2,7 @@ package snakeladder.game;
 
 import ch.aplu.jgamegrid.*;
 import java.awt.Point;
+import java.util.ArrayList;
 
 public class Puppet extends Actor
 {
@@ -17,6 +18,7 @@ public class Puppet extends Actor
   private int initialPip;
   private int pipsArray[];
   private int puppetInter[];
+  private boolean wasDisplaced = false;
 
   Puppet(GamePane gp, NavigationPane np, String puppetImage)
   {
@@ -87,6 +89,29 @@ public class Puppet extends Actor
     cellIndex++;
   }
 
+  private void moveToPreviousCell()
+  {
+    int tens = cellIndex / 10;
+    int ones = cellIndex - tens * 10;
+    if (tens % 2 == 0)     // Cells starting left 01, 21, .. 81
+    {
+      if (ones == 0 && cellIndex > 0)
+        setLocation(new Location(getX(), getY() + 1));
+      else
+        setLocation(new Location(getX() - 1, getY()));
+
+    }
+    else     // Cells starting left 20, 40, .. 100
+    {
+      if (ones == 0)
+        setLocation(new Location(getX(), getY() + 1));
+      else
+        setLocation(new Location(getX() + 1, getY()));
+
+    }
+    cellIndex--;
+  }
+
   public void act()
   {
     if ((cellIndex / 10) % 2 == 0)
@@ -122,32 +147,62 @@ public class Puppet extends Actor
         navigationPane.prepareRoll(cellIndex);
         return;
       }
-
       nbSteps--;
       if (nbSteps == 0)
       {
-        // Check if on connection start
-        if ((currentCon = gamePane.getConnectionAt(getLocation())) != null)
-        {
-          actionSub();
-          if (currentCon instanceof Snake)
-          {
-            navigationPane.showStatus("Digesting...");
-            navigationPane.playSound(GGSound.MMM);
-          }
-          else
-          {
-            navigationPane.showStatus("Climbing...");
-            navigationPane.playSound(GGSound.BOING);
-          }
+        if (sameSquare() != -1) {
+          gamePane.getAllPuppets().get(sameSquare()).displace();
         }
-        else
-        {
-          setActEnabled(false);
-          navigationPane.prepareRoll(cellIndex);
+        checkCon();
+
+      }
+    }
+  }
+
+  public int sameSquare() {
+    ArrayList<Puppet> puppets = (ArrayList<Puppet>) this.gamePane.getAllPuppets();
+    for (int i = 0; i < gamePane.getNumberOfPlayers(); i++) {
+      if (!this.puppetName.equals(puppets.get(i).puppetName)) {
+        if (this.cellIndex == puppets.get(i).cellIndex) {
+          this.gamePane.getAllPuppets().get(i).toDisplace();
+          return i;
         }
       }
     }
+    return -1;
+  }
+
+
+  public void checkCon(){
+    // Check if on connection start
+    if ((currentCon = gamePane.getConnectionAt(getLocation())) != null)
+    {
+      actionSub();
+      if (currentCon instanceof Snake)
+      {
+        navigationPane.showStatus("Digesting...");
+        navigationPane.playSound(GGSound.MMM);
+      }
+      else
+      {
+        navigationPane.showStatus("Climbing...");
+        navigationPane.playSound(GGSound.BOING);
+      }
+    }
+    else
+    {
+      setActEnabled(false);
+      navigationPane.prepareRoll(cellIndex);
+    }
+  }
+
+  public void toDisplace() {
+    wasDisplaced = true;
+  }
+  public void displace() {
+    moveToPreviousCell();
+    checkCon();
+    wasDisplaced = false;
   }
 
   //initialise arrays puppetInter[] and pipsArray[] to keep statistics

@@ -180,7 +180,6 @@ public class NavigationPane extends GameGrid
     }
     int currentRound = nbRolls / gp.getNumberOfPlayers();
     int playerIndex = nbRolls % gp.getNumberOfPlayers();
-    int numberOfDie = this.numberOfDice;
 
     if (dieValues.get(playerIndex).size() > currentRound) {
       System.out.println("dieValues.get(playerIndex).get(currentRound): " + dieValues.get(playerIndex).get(currentRound));

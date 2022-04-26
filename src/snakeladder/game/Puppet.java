@@ -201,7 +201,6 @@ public class Puppet extends Actor
   }
   public void displace() {
     moveToPreviousCell();
-    checkCon();
     wasDisplaced = false;
   }
 

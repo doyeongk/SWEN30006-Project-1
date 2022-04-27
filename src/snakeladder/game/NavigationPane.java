@@ -337,12 +337,11 @@ public class NavigationPane extends GameGrid
     showStatus("Rolling...");
     showPips("");
 
-    ArrayList<Integer> stepsToMove = new ArrayList<Integer>();
-    stepsToMove.add(nb);
+    int stepsToMove = nb;
 
     if (numberOfDice != 1) {
       for (int i = 1; i < numberOfDice; i++) {
-        stepsToMove.add(ServicesRandom.get().nextInt(6) + 1);
+        stepsToMove += ServicesRandom.get().nextInt(6) + 1;
       }
     }
 

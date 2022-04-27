@@ -7,14 +7,14 @@ public class Die extends Actor
 {
   private NavigationPane np;
   private int nb;
-  private ArrayList<Integer> listOfRolls;
+  private int sumOfRolls;
 
-  Die(int nb, NavigationPane np, ArrayList<Integer> listOfRolls)
+  Die(int nb, NavigationPane np, int sumOfRolls)
   {
     super("sprites/pips" + nb + ".gif", 7);
     this.nb = nb;
     this.np = np;
-    this.listOfRolls = listOfRolls;
+    this.sumOfRolls = sumOfRolls;
   }
 
   public void act()
@@ -23,16 +23,9 @@ public class Die extends Actor
     if (getIdVisible() == 6)
     {
       setActEnabled(false);
-      np.startMoving(stepsToMove());
+      np.startMoving(sumOfRolls);
     }
   }
 
-  private int stepsToMove()  {
-    int sum = 0;
-    for (Integer listOfRoll : this.listOfRolls) {
-      sum += listOfRoll;
-    }
-    return sum;
-  }
 
 }

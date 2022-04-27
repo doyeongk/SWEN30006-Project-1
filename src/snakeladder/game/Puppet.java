@@ -1,3 +1,5 @@
+/* SWEN30006 Project 1 Submitted by Team 12 */
+
 package snakeladder.game;
 
 import ch.aplu.jgamegrid.*;
@@ -214,7 +216,7 @@ public class Puppet extends Actor
 
   public void displace() {
     go(-1);
-    wasDisplaced = false;
+
     navigationPane.prepareRoll(cellIndex);
   }
 

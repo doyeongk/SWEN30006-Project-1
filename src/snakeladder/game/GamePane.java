@@ -1,3 +1,5 @@
+/* SWEN30006 Project 1 Submitted by Team 12 */
+
 package snakeladder.game;
 
 import ch.aplu.jgamegrid.*;

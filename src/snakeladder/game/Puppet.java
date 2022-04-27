@@ -216,7 +216,7 @@ public class Puppet extends Actor
 
   public void displace() {
     go(-1);
-
+    this.wasDisplaced = false;
     navigationPane.prepareRoll(cellIndex);
   }
 
